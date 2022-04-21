@@ -1,7 +1,10 @@
 import styles from './style.module.css'
 
-const GameOver = () => {
-    return ( <h1>gameover</h1> );
+const GameOver = ({retry}) => {
+    return ( <div>
+        <h1>fim de jogo</h1>
+        <button onClick={retry}>reiniciar</button>
+    </div> );
 }
  
 export default GameOver;

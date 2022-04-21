@@ -1,13 +1,13 @@
 import styles from "./style.module.css";
 
 
-const StartScreen = () => {
+const StartScreen = ({startGame}) => {
     
   return (
     <div className={styles.start}>
       <h1>Secret Word</h1>
       <p>Clique para jogar</p>
-      <button>Começar</button>
+      <button onClick={startGame}>Começar</button>
     </div>
   );
 };
