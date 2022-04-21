@@ -1,10 +1,11 @@
 import './App.css'
+import StartScreen from './components/Startscreen'
 
 function App() {
  
   return (
     <div className="App">
-    <h2>ola mundo</h2>
+    <StartScreen/>
     </div>
   )
 }
