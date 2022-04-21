@@ -8,8 +8,6 @@ import StartScreen from "./components/Startscreen";
 import Game from "./components/Game";
 import GameOver from "./components/End";
 
-
-
 const stage = [
   { id: 1, name: "start" },
   { id: 2, name: "game" },
@@ -17,28 +15,59 @@ const stage = [
 ];
 
 function App() {
-  const [GameStage, setGameStage] = useState(stage[0].name)
-  const [Word, setWord] = useState(wordsList)
-  
+  const [GameStage, setGameStage] = useState(stage[0].name);
+  const [Word, setWord] = useState(wordsList);
+
+  const [PickedWord, setPickedWord] = useState("");
+  const [PickedCategory, setPickedCategory] = useState("");
+  const [Letters, setLetters] = useState([]);
+
+  const pickWordAndCategory = () => {
+    //* pegando uma categoria radomicamente
+    const categories = Object.keys(Word);
+    const category =
+      categories[Math.floor(Math.random() * Object.keys(categories).length)];
+
+    //* pegando uma palavra randomicamente
+    const word =
+      Word[category][Math.floor(Math.random() * Word[category].length)];
+
+    return {word, category};
+  };
+
   //*começa o jogo
-  const startGame=()=>{
-    setGameStage(stage[1].name)
-  }
+  const startGame = () => {
+    //* escollhendo a palavra e a categoria
+    const { word, category } = pickWordAndCategory();
+
+    //* criando um array de letras
+    let wordLetters = word.split('')
+    wordLetters= wordLetters.map((letter)=>letter.toLowerCase())
+
+    //* pegando o estados
+    setPickedWord(word)
+    setPickedCategory(category)
+    setLetters(Letters)
+
+
+    console.log(word, category, '  ' , wordLetters)
+    setGameStage(stage[1].name);
+  };
 
   //* processa a letra do input
-  const verifyletter =()=>{
-    setGameStage(stage[2].name)
-  }
+  const verifyletter = () => {
+    setGameStage(stage[2].name);
+  };
 
   //* reinicia o jogo
-  const retry =()=>{
-    setGameStage(stage[0].name)
-  }
+  const retry = () => {
+    setGameStage(stage[0].name);
+  };
   return (
     <div className="App">
-      {GameStage === 'start' && <StartScreen  startGame={startGame}/>}
-      {GameStage === 'game' && <Game verifyletter={verifyletter}/>}
-      {GameStage === 'end' && <GameOver retry={retry}/>}
+      {GameStage === "start" && <StartScreen startGame={startGame} />}
+      {GameStage === "game" && <Game verifyletter={verifyletter} />}
+      {GameStage === "end" && <GameOver retry={retry} />}
     </div>
   );
 }
