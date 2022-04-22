@@ -124,7 +124,7 @@ function App() {
           WrongLetters={WrongLetters}
         />
       )}
-      {GameStage === "end" && <GameOver retry={retry} />}
+      {GameStage === "end" && <GameOver retry={retry}  score={Score}/>}
     </div>
   );
 }
