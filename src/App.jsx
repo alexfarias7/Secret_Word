@@ -14,6 +14,8 @@ const stage = [
   { id: 3, name: "end" },
 ];
 
+const guessQty= 3
+
 function App() {
   const [GameStage, setGameStage] = useState(stage[0].name);
   const [Word, setWord] = useState(wordsList);
@@ -24,7 +26,7 @@ function App() {
 
   const [GuessedLetters, setGuessedLetters] = useState([]);
   const [WrongLetters, setWrongLetters] = useState([]);
-  const [Guesses, setGuesses] = useState(3);
+  const [Guesses, setGuesses] = useState(guessQty);
   const [Score, setScore] = useState(0);
 
   const pickWordAndCategory = () => {
@@ -47,11 +49,11 @@ function App() {
 
     //* criando um array de letras
     let wordLetters = word.split("");
-    wordLetters = wordLetters.map((letter) => letter.toLowerCase());
+    wordLetters = wordLetters.map((l) => l.toLowerCase());
 
     //* pegando o estados
-    setPickedWord(word);
     setPickedCategory(category);
+    setPickedWord(word);
     setLetters(wordLetters);
 
     console.log(word, category, "  ", wordLetters);
@@ -59,12 +61,52 @@ function App() {
   };
 
   //* processa a letra do input
-  const verifyletter = (letters) => {
-    console.log(letters);
+
+  const verifyletter = (letter) => {
+    const normalizedLetter = letter.toLowerCase();
+
+    // check if letter has already been utilized
+    if (
+      GuessedLetters.includes(normalizedLetter) ||
+      WrongLetters.includes(normalizedLetter)
+    ) {
+      return;
+    }
+
+    // push guessed letter or remove a chance
+    if (Letters.includes(normalizedLetter)) {
+      setGuessedLetters((actualGuessedLetters) => [
+        ...actualGuessedLetters,
+        letter,
+      ]);
+    } else {
+      setWrongLetters((actualWrongLetters) => [
+        ...actualWrongLetters,
+        normalizedLetter,
+      ]);
+
+      setGuesses((actualGuesses) => actualGuesses - 1);
+    }
   };
+
+  console.log(WrongLetters);
+
+  const clearLetterStates = () => {
+    setGuessedLetters([]);
+    setWrongLetters([]);
+  };
+
+  useEffect(() => {
+    if (Guesses <= 0) {
+      clearLetterStates();
+      setGameStage(stage[2].name);
+    }
+  }, [Guesses]);
 
   //* reinicia o jogo
   const retry = () => {
+    setScore(0);
+    setGuesses(guessQty);
     setGameStage(stage[0].name);
   };
   return (
